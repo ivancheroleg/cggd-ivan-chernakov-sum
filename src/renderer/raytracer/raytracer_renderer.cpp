@@ -29,8 +29,11 @@ void cg::renderer::ray_tracing_renderer::init()
 	render_target = std::make_shared<cg::resource<cg::unsigned_color>>(
 			settings->width, settings->height);
 
+	
 	raytracer = std::make_shared<cg::renderer::raytracer<
-	        cg::vertex,cg::unsigned_color>>();
+	        cg::vertex,cg::unsigned_color>>(
+			settings->width, settings->height
+			);
 
 	raytracer->set_render_target(render_target);
 	raytracer->set_viewport(settings->width, settings->height);
