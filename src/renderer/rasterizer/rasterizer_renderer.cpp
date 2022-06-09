@@ -22,9 +22,8 @@ void cg::renderer::rasterization_renderer::init()
 			float3{
 					settings->camera_position[0],
 					settings->camera_position[1],
-					settings->camera_position[2]
-			}
-	);
+					settings->camera_position[2]}
+			);
 	camera->set_phi(settings->camera_phi);
 	camera->set_theta(settings->camera_theta);
 	camera->set_angle_of_view(settings->camera_angle_of_view);
@@ -37,6 +36,8 @@ void cg::renderer::rasterization_renderer::init()
 	rasterizer->set_render_target(render_target, depth_buffer);
 	
 }
+
+using namespace linalg::ostream_overloads;
 void cg::renderer::rasterization_renderer::render()
 {
 	rasterizer->clear_render_target({56,155,90});
@@ -58,6 +59,10 @@ void cg::renderer::rasterization_renderer::render()
 	};
 
 	for(size_t shape_id = 0; shape_id < model->get_index_buffers().size(); shape_id++) {
+
+		std::cout << model->get_vertex_buffers()[shape_id]->get_number_of_elements() << '\n';
+		std::cout << model->get_index_buffers()[shape_id]->get_number_of_elements() << '\n';
+
 		rasterizer->set_vertex_buffer(model->get_vertex_buffers()[shape_id]);
 		rasterizer->set_index_buffer(model->get_index_buffers()[shape_id]);
 		rasterizer->draw(model->get_vertex_buffers()[shape_id]->get_number_of_elements(), 0);

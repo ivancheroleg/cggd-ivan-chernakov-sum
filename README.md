@@ -2,6 +2,14 @@
 
 This repo contains a template for Computer graphics in Game development labs (summer 2022)
 
+#Chernakov Ivan BS21-05
+##Rasterization lab results
+- Cube.obj still cannot be rendered as it meant to (only non-visible part), but I tried to render CornelBox, and it was done quite right (of course without RayTracing).
+- Z_test works
+- Fixed problem with Reaching the resource.
+- Tried to use some 3D models, but every time it didn't work. Maybe the files were too big or some other problems with transporting files. Every model was Free to Use Licensed*
+- I have left "debug" sout's, do not think it is necessary to delete them as amount of vertices is an always required info. Added debug from last time.
+
 ## Pre-requirements
 
 - Version control: [Git](https://git-scm.com/)

@@ -183,7 +183,7 @@ namespace cg::renderer
 									  v*vertices[1].z +
 									  w*vertices[2].z;
 						if (depth_test(depth, x, y)) {
-							auto pixel_result = pixel_shader(vertices[0], 0.f);
+							auto pixel_result = pixel_shader(vertices[0], depth);
 							render_target->item(x,y) = RT::from_color(pixel_result);
 							if(depth_buffer)
 								depth_buffer->item(x,y) = depth;
@@ -192,7 +192,6 @@ namespace cg::renderer
 				}
 			}
 		}
-
 	}
 
 	template<typename VB, typename RT>

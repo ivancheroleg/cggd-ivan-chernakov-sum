@@ -52,7 +52,7 @@ void cg::world::model::load_obj(const std::filesystem::path& model_path)
 					index_map[idx_tuple] = vertex_buffer_size;
 					vertex_buffer_size++;
 				}
-				index_buffer_size--;
+				index_buffer_size++;
 			}
 			index_offset += fv;
 		}
@@ -155,7 +155,7 @@ void cg::world::model::load_obj(const std::filesystem::path& model_path)
 						vertex.emissive_b = material.emission[2];
 					}
 
-					index_map[idx_tuple] == vertex_buffer_id;
+					index_map[idx_tuple] = vertex_buffer_id;
 					vertex_buffer_id++;
 				}
 				index_buffer->item(index_buffer_id) = index_map[idx_tuple];
