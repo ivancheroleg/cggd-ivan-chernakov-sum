@@ -65,7 +65,7 @@ void cg::renderer::rasterization_renderer::render()
 
 		rasterizer->set_vertex_buffer(model->get_vertex_buffers()[shape_id]);
 		rasterizer->set_index_buffer(model->get_index_buffers()[shape_id]);
-		rasterizer->draw(model->get_vertex_buffers()[shape_id]->get_number_of_elements(), 0);
+		rasterizer->draw(model->get_index_buffers()[shape_id]->get_number_of_elements(), 0);
 	}
 
 	cg::utils::save_resource(*render_target, settings->result_path);
