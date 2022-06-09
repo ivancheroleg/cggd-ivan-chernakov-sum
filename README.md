@@ -4,8 +4,8 @@ This repo contains a template for Computer graphics in Game development labs (su
 
 # Chernakov Ivan BS21-05
 ## Rasterization lab results
-- Cube.obj renders correctly
-- Z_test.obj renders correctly
+- **Cube.obj** renders correctly.
+- **Z_test.obj** renders correctly.
 - Fixed problem with Reaching the resource.
 - Tried to use some 3D models, but every time it didn't work. Maybe the files were too big or some other problems with transporting files. Every model was Free to Use Licensed*
 - I have left "debug" sout's, do not think it is necessary to delete them as amount of vertices is an always required info. Added debug from last time.
