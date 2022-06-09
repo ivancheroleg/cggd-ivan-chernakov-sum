@@ -2,8 +2,8 @@
 
 This repo contains a template for Computer graphics in Game development labs (summer 2022)
 
-#Chernakov Ivan BS21-05
-##Rasterization lab results
+# Chernakov Ivan BS21-05
+## Rasterization lab results
 - Cube.obj still cannot be rendered as it meant to (only non-visible part), but I tried to render CornelBox, and it was done quite right (of course without RayTracing).
 - Z_test works
 - Fixed problem with Reaching the resource.
