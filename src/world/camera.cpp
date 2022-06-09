@@ -59,6 +59,9 @@ void cg::world::camera::set_z_far(float in_z_far)
 
 const float4x4 cg::world::camera::get_view_matrix() const
 {
+	return static_cast<const float4x4>(nullptr);
+
+
 	// TODO: Lab 1.04. Implement `cg::world::camera` class
 }
 
