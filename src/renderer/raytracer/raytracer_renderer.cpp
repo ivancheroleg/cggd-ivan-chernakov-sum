@@ -35,11 +35,16 @@ void cg::renderer::ray_tracing_renderer::init()
 	raytracer->set_vertex_buffers(model->get_vertex_buffers());
 	raytracer->set_index_buffers(model->get_index_buffers());
 
+
+
 	lights.push_back(
 			{float3{0.f,1.58f, -0.03f},
 			 float3{0.78f,0.78f,0.78f}});
 
 	shadow_raytracer = std::make_shared<cg::renderer::raytracer<cg::vertex, cg::unsigned_color>>();
+
+	shadow_raytracer->set_vertex_buffers(model->get_vertex_buffers());
+	shadow_raytracer->set_index_buffers(model->get_index_buffers());
 
 }
 
@@ -72,14 +77,32 @@ void cg::renderer::ray_tracing_renderer::render()
 		for(auto& light : lights) {
 			cg::renderer::ray to_light(position,
 									   light.position - position);
-			result_color += triangle.diffuse * light.color *
-							std::max(dot(normal, to_light.direction), 0.f);
+			auto shadow_payload = shadow_raytracer->trace_ray(
+					to_light, 1,
+					length(light.position - position)
+					);
+			if(shadow_payload.t < 0.f) {
+				result_color += triangle.diffuse * light.color *
+								std::max(dot(normal, to_light.direction), 0.f);
+			}
+
 		}
 		payload.color = cg::color::from_float3(result_color);
 		return payload;
 	};
 
 	raytracer->build_acceleration_structure();
+	shadow_raytracer->build_acceleration_structure();
+
+	shadow_raytracer->miss_shader = [](const ray& ray) {
+		payload payload{};
+		payload.t = -1.f;
+		return payload;
+	};
+	shadow_raytracer->any_hit_shader = [](const ray& ray, payload& payload,
+										  const triangle<cg::vertex>& triangle) {
+		return payload;
+	};
 
 	auto start = std::chrono::high_resolution_clock::now();
 	raytracer->ray_generation(
@@ -96,7 +119,5 @@ void cg::renderer::ray_tracing_renderer::render()
 
 
 
-	// TODO: Lab 2.04. Define any_hit_shader and miss_shader for shadow_raytracer
-	// TODO: Lab 2.04. Adjust closest_hit_shader of raytracer to cast shadows rays and to ignore occluded lights
 	// TODO: Lab 2.05. Adjust ray_tracing_renderer class to build the acceleration structure
 }
