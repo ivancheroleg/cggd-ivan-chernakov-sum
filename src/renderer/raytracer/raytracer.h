@@ -310,7 +310,7 @@ namespace cg::renderer
 			index /= base_y;
 			fraction *= inv_base;
 		}
-		return result - 0.5f
+		return result - 0.5f;
 	}
 
 
