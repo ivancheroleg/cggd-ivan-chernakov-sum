@@ -41,10 +41,7 @@ void cg::renderer::ray_tracing_renderer::init()
 			{float3{0.f,1.58f, -0.03f},
 			 float3{0.78f,0.78f,0.78f}});
 
-	shadow_raytracer = std::make_shared<cg::renderer::raytracer<cg::vertex, cg::unsigned_color>>();
-
-	shadow_raytracer->set_vertex_buffers(model->get_vertex_buffers());
-	shadow_raytracer->set_index_buffers(model->get_index_buffers());
+	shadow_raytracer = std::make_shared<cg::renderer::raytracer<cg::vertex,cg::unsigned_color>>();
 
 }
 
@@ -92,7 +89,8 @@ void cg::renderer::ray_tracing_renderer::render()
 	};
 
 	raytracer->build_acceleration_structure();
-	shadow_raytracer->build_acceleration_structure();
+	shadow_raytracer->acceleration_structures =
+			raytracer->acceleration_structures;
 
 	shadow_raytracer->miss_shader = [](const ray& ray) {
 		payload payload{};
