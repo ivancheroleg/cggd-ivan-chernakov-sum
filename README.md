@@ -3,6 +3,14 @@
 This repo contains a template for Computer graphics in Game development labs (summer 2022)
 
 # Chernakov Ivan BS21-05
+## Raytracing lab results
+- **Cornel Box** is traced correctly.
+- **Cornel Box**'s colors are changed successfully.
+- **Monte-Carlo** tracing is done.
+- Final result is traced by **2000** frames.
+
+![Final result is traced by 2000 frames](./images/resultRaytracing.png)
+
 ## Rasterization lab results
 - **Cube.obj** renders correctly.
 - **Z_test.obj** renders correctly.

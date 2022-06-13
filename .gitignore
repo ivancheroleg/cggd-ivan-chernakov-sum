@@ -48,6 +48,7 @@ Premake5.exe
 
 # Images
 *.png
+!images/*.png
 
 # VS code
 .vscode/
