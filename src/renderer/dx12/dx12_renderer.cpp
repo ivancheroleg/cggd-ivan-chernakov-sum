@@ -243,13 +243,17 @@ void cg::renderer::dx12_renderer::create_shader_resource_view(const ComPtr<ID3D1
 
 void cg::renderer::dx12_renderer::create_constant_buffer_view(const ComPtr<ID3D12Resource>& buffer, D3D12_CPU_DESCRIPTOR_HANDLE cpu_handler)
 {
-	// TODO Lab 3.04. Create a constant buffer view
+	D3D12_CONSTANT_BUFFER_VIEW_DESC cbv_desc = {};
+	cbv_desc.BufferLocation = buffer->GetGPUVirtualAddress();
+	cbv_desc.SizeInBytes = (sizeof(cb) + 255) & ~255;
+
+	device->CreateConstantBufferView(&cbv_desc, cpu_handler);
+
 }
 
 void cg::renderer::dx12_renderer::load_assets()
 {
 	// TODO Lab 3.04. Create a descriptor heap for a constant buffer
-	// TODO Lab 3.04. Create a constant buffer view
 
 	vertex_buffers.resize(model->get_vertex_buffers().size());
 	vertex_buffer_views.resize(model->get_vertex_buffers().size());
@@ -292,6 +296,8 @@ void cg::renderer::dx12_renderer::load_assets()
 				constant_buffer->Map(0,
 									 &read_range,
 									 reinterpret_cast<void**>(&constant_buffer_data_begin)));
+
+
 	}
 
 
@@ -303,6 +309,20 @@ void cg::renderer::dx12_renderer::load_assets()
 								   const_buffer_name);
 
 	copy_data(&cb, sizeof(cb), constant_buffer);
+
+	THROW_IF_FAILED(
+			constant_buffer->Map(0, &read_range)
+			)
+
+	cbv_srv_heap.create_heap(
+			device,
+			D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
+			1,
+			D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE
+			);
+	create_constant_buffer_view(
+			constant_buffer,
+			cbv_srv_heap.get_cpu_descriptor_handle(0));
 }
 
 
