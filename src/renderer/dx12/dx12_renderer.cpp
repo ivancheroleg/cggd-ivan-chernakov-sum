@@ -31,6 +31,14 @@ void cg::renderer::dx12_renderer::init()
 	camera->set_z_near(settings->camera_z_near);
 	camera->set_z_far(settings->camera_z_far);
 
+	view_port = CD3DX12_VIEWPORT(0.f, 0.f,
+								 static_cast<float>(settings->width),
+								 static_cast<float>(settings->height));
+	scissor_rect = CD3DX12_RECT(0, 0,
+								 static_cast<LONG>(settings->width),
+								 static_cast<LONG>(settings->height));
+	load_pipeline();
+	load_assets();
 }
 
 void cg::renderer::dx12_renderer::destroy()
@@ -252,7 +260,7 @@ ComPtr<ID3DBlob> cg::renderer::dx12_renderer::compile_shader(const std::filesyst
 	ComPtr<ID3DBlob> error;
 	UINT compile_flags = 0;
 #ifdef _DEBUG
-	compile_flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION
+	compile_flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
 
 	HRESULT result = D3DCompileFromFile(
@@ -487,6 +495,20 @@ void cg::renderer::dx12_renderer::load_assets()
 void cg::renderer::dx12_renderer::populate_command_list()
 {
 	// TODO Lab 3.06. Implement `populate_command_list` method
+
+	// Reset
+	THROW_IF_FAILED(command_allocators[frame_index]->Reset());
+	THROW_IF_FAILED(command_list->Reset(
+			command_allocators[frame_index].Get(),
+			pipeline_state.Get()
+			));
+
+	// Initial state
+	command_list->SetGraphicsRootSignature(root_signature.Get());
+	ID3D12DescriptorHeap* heaps[] = {cbv_srv_heap.get()};
+	command_list->SetDescriptorHeaps(_countof (heaps), heaps);
+	command_list->SetComputeRootDescriptorTable(0, cbv_srv_heap.get_gpu_descriptor_handle(0));
+	command_list->RSSetViewports(1, &view_port);
 
 }
 
