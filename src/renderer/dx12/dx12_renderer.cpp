@@ -236,6 +236,9 @@ D3D12_INDEX_BUFFER_VIEW cg::renderer::dx12_renderer::create_index_buffer_view(co
 {
 	// TODO Lab 3.04. Create index buffer views
 	D3D12_INDEX_BUFFER_VIEW view{};
+	view.BufferLocation = index_buffer->GetGPUVirtualAddress();
+	view.SizeInBytes = index_buffer_size;
+	view.Format = DXGI_FORMAT_R32_UINT;
 	return view;
 }
 
@@ -255,7 +258,7 @@ void cg::renderer::dx12_renderer::create_constant_buffer_view(const ComPtr<ID3D1
 
 void cg::renderer::dx12_renderer::load_assets()
 {
-	// TODO Lab 3.04. Create a descriptor heap for a constant buffer
+
 
 	vertex_buffers.resize(model->get_vertex_buffers().size());
 	vertex_buffer_views.resize(model->get_vertex_buffers().size());
@@ -298,13 +301,6 @@ void cg::renderer::dx12_renderer::load_assets()
 		copy_data(index_buffer_data->get_data(),
 				  index_buffer_size,
 				  index_buffers[i]);
-		CD3DX12_RANGE read_range(0, 0);
-		THROW_IF_FAILED(
-				constant_buffer->Map(0,
-									 &read_range,
-									 reinterpret_cast<void**>(&constant_buffer_data_begin)));
-
-
 	}
 
 
@@ -318,10 +314,11 @@ void cg::renderer::dx12_renderer::load_assets()
 	copy_data(&cb, sizeof(cb), constant_buffer);
 
 
-	//  CHECK LATER
+	CD3DX12_RANGE read_range(0, 0);
 	THROW_IF_FAILED(
-			constant_buffer->Map(0, &read_range)
-			)
+			constant_buffer->Map(0,
+								 &read_range,
+								 reinterpret_cast<void**>(&constant_buffer_data_begin)));
 
 	cbv_srv_heap.create_heap(
 			device,
