@@ -3,6 +3,9 @@
 This repo contains a template for Computer graphics in Game development labs (summer 2022)
 
 # Chernakov Ivan BS21-05
+## DirectX 12 lab results
+- lab is done correctly, the final result is approached.
+
 ## Raytracing lab results
 - **Cornel Box** is traced correctly.
 - **Cornel Box**'s colors are changed successfully.
